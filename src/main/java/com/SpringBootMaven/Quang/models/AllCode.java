@@ -1,5 +1,6 @@
 package com.SpringBootMaven.Quang.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -17,8 +18,12 @@ public class AllCode {
     private String keyMap;
     @Column(name = "type")
     private String type;
+    @JsonView({Views.Public.class, Views.Custom.class})
+
     @Column(name = "valueVi")
     private String valueVi;
+    @JsonView({Views.Public.class, Views.Custom.class})
+
     @Column(name = "valueEn")
     private String valueEn;
     @Column

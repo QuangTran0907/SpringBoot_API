@@ -40,15 +40,18 @@ public class User {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode positionData;
     @JsonView({Views.Public.class, Views.Custom.class})
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode genderData;
     @JsonView({Views.Public.class, Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode roleData;
     @Column
     private Date createdAt;
