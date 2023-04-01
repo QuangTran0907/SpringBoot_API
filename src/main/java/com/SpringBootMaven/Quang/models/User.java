@@ -1,9 +1,9 @@
 package com.SpringBootMaven.Quang.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.Date;
 
@@ -12,57 +12,65 @@ import java.util.Date;
 @Table(name = "users")
 public class User {
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @JsonView({Views.Public.class,Views.Custom.class})
-
+    @Column
     private String email;
+    @Column
     @JsonView(Views.Custom.class)
     private String password;
+
     @JsonView({Views.Public.class,Views.Custom.class})
-
+    @Column
     private String firstName;
+    @Column
     @JsonView({Views.Public.class, Views.Custom.class})
-
     private String lastName;
     @JsonView(Views.Public.class)
-
+    @Column
     private  String address;
     @JsonView(Views.Public.class)
-
+    @Column
     private  String phonenumber;
-    @JsonView(Views.Public.class)
-
-    private int gender;
-
+    @Column
     private String image;
-    @JsonView({Views.Public.class,Views.Custom.class})
+    @JsonView({Views.Public.class, Views.Custom.class})
 
-    private String roleid;
-    @JsonView(Views.Public.class)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    private AllCode positionData;
+    @JsonView({Views.Public.class, Views.Custom.class})
 
-    private String positionid;
-
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    private AllCode genderData;
+    @JsonView({Views.Public.class, Views.Custom.class})
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    private AllCode roleData;
+    @Column
     private Date createdAt;
 
-    @JsonIgnore
+    @Column
     private Date updatedAt;
+
 
     public User() {
     }
 
-    public User( String email, String password, String firstName, String lastName, String address, String phonenumber, int gender, String image, String roleid, String positionid, Date createdAt, Date updatedAt) {
-
+    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, Date createdAt, Date updatedAt) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.phonenumber = phonenumber;
-        this.gender = gender;
         this.image = image;
-        this.roleid = roleid;
-        this.positionid = positionid;
+        this.positionData = positionData;
+        this.genderData = genderData;
+        this.roleData = roleData;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -123,14 +131,6 @@ public class User {
         this.phonenumber = phonenumber;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
     public String getImage() {
         return image;
     }
@@ -139,20 +139,28 @@ public class User {
         this.image = image;
     }
 
-    public String getRoleid() {
-        return roleid;
+    public AllCode getPositionData() {
+        return positionData;
     }
 
-    public void setRoleid(String roleid) {
-        this.roleid = roleid;
+    public void setPositionData(AllCode positionData) {
+        this.positionData = positionData;
     }
 
-    public String getPositionid() {
-        return positionid;
+    public AllCode getGenderData() {
+        return genderData;
     }
 
-    public void setPositionid(String positionid) {
-        this.positionid = positionid;
+    public void setGenderData(AllCode genderData) {
+        this.genderData = genderData;
+    }
+
+    public AllCode getRoleData() {
+        return roleData;
+    }
+
+    public void setRoleData(AllCode roleData) {
+        this.roleData = roleData;
     }
 
     public Date getCreatedAt() {
@@ -169,24 +177,5 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address='" + address + '\'' +
-                ", phonenumber='" + phonenumber + '\'' +
-                ", gender=" + gender +
-                ", image='" + image + '\'' +
-                ", roleid='" + roleid + '\'' +
-                ", positionid='" + positionid + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
     }
 }

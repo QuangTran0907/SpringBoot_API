@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/api/v1/users")
+@RequestMapping(path = "/api/v1")
 public class UserController {
     @Autowired
     private UserRepository repository;
@@ -104,7 +104,7 @@ public class UserController {
         }
 
         try {
-            User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGender(),newUser.getImage(),newUser.getRoleid(),newUser.getPositionid(),newUser.getCreatedAt(),newUser.getUpdatedAt());
+            User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGenderData(),newUser.getImage(),newUser.getRoleData(),newUser.getPositionData(),newUser.getCreatedAt(),newUser.getUpdatedAt());
             repository.save(user);
 
             return
@@ -134,7 +134,7 @@ public class UserController {
                         new Json_Response_User(1, "Parameter missing", null)
                 );
             }
-            User user = repository.findById(newUser.getId()).orElse(new User());
+            User user = repository.findById(newUser.getId()).orElse(new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(10)), newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getPhonenumber(), newUser.getGenderData(), newUser.getImage(), newUser.getRoleData(), newUser.getPositionData(), newUser.getCreatedAt(), newUser.getUpdatedAt()));
 
             if(user.getEmail()!="") {
                 user.setFirstName(newUser.getFirstName());
