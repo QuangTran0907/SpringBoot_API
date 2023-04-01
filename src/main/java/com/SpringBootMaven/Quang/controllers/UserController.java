@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 @RequestMapping(path = "/api/v1")
 public class UserController {
     @Autowired
@@ -23,18 +24,8 @@ public class UserController {
     private AllCodeRepository allCodeRepository;
 
 
-//    @GetMapping("/")
-//
-//    void getUsers(HttpServletRequest req, HttpServletResponse res) throws IOException {
-//       List<User> users = repository.findAll();
-//        PrintWriter out = res.getWriter();
-//        res.setContentType("application/json");
-//        res.setCharacterEncoding("UTF-8");
-//        out.print(new Gson().toJson(users));
-//        out.flush();
-//    }
 
-    @GetMapping("/get-all-user")
+    @GetMapping("/get-all-users")
     @JsonView(Views.Public.class)
     ResponseEntity<Json_Response_User> getAllUser(@Param("id") String id)
     {
@@ -67,19 +58,7 @@ public class UserController {
         }
 
     }
-//    @GetMapping("/{id}")
-//    ResponseEntity<Json_Response> findById(@PathVariable int id)
-//    {
-//
-//        Optional<User> foundUser = repository.findById(id);
-//        return  (foundUser.isPresent())?
-//                ResponseEntity.status(HttpStatus.OK).body(
-//                        new Json_Response(0,"Query product successfully", foundUser)
-//                ):
-//                ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-//                        new Json_Response(1,"Can not find the product with id:  "+id,null)
-//                );
-//    }
+
     boolean checkMail(String mail)
     {
        User user = repository.findByEmail(mail);
@@ -106,6 +85,7 @@ public class UserController {
         try {
             User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGenderData(),newUser.getImage(),newUser.getRoleData(),newUser.getPositionData(),newUser.getCreatedAt(),newUser.getUpdatedAt());
             repository.save(user);
+            System.out.println("hhahahhahahahahaha"+BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)));
 
             return
                     ResponseEntity.status(HttpStatus.OK).body(
@@ -214,11 +194,12 @@ public class UserController {
                 );
             }
             else {
-                AllCode allCode = allCodeRepository.findByType(type);
-                if (allCode!=null)
+                List<AllCode> allCodes = allCodeRepository.findByType(type);
+                System.out.println(allCodes.size());
+                if (allCodes.size()!=0)
                 {
                     return ResponseEntity.status(HttpStatus.OK).body(
-                            new Json_Response(0,"oke",allCode)
+                            new Json_Response(0,"OK",allCodes)
 
                     );
                 }

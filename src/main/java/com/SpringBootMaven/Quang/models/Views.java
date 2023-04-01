@@ -4,5 +4,5 @@ public interface Views{
     public interface Public{}
     public interface Custom{}
 
-    public interface CustomerDetails extends Public{}
+    public interface Internal extends Public{}
 }

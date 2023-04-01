@@ -12,35 +12,54 @@ import java.util.Set;
 public class AllCode {
     @Id
     @Column
+    @JsonView(Views.Public.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "keyMap",unique = true,nullable = false)
+    @JsonView(Views.Public.class)
     private String keyMap;
     @Column(name = "type")
+    @JsonView(Views.Public.class)
     private String type;
     @JsonView({Views.Public.class, Views.Custom.class})
-
     @Column(name = "valueVi")
     private String valueVi;
     @JsonView({Views.Public.class, Views.Custom.class})
-
     @Column(name = "valueEn")
     private String valueEn;
     @Column
-    private Date createdAt;
+    @JsonView(Views.Public.class)
+    private String createdAt;
     @Column
-    private Date updateAt;
+    @JsonView(Views.Public.class)
+    private String updateAt;
 
+    @JsonView(Views.Custom.class)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "positionData")
     private List<User> userByPosition;
 
+    @JsonView(Views.Custom.class)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genderData")
     private List<User> userByGender;
 
 
-
+    @JsonView(Views.Custom.class)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "roleData")
     private List<User> userByRole;
+
+
+    @JsonView(Views.Custom.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "priceTypeData")
+    private List<Doctor_Infor> doctorByPrice;
+
+    @JsonView(Views.Custom.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "provinceTypeData")
+    private List<Doctor_Infor> doctorByProvince;
+
+    @JsonView(Views.Custom.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentTypeData")
+    private List<Doctor_Infor> doctorByPayment;
+
 
 
 
@@ -50,7 +69,7 @@ public class AllCode {
     public AllCode() {
     }
 
-    public AllCode(int id, String keyMap, String type, String valueVi, String valueEn, Date createdAt, Date updateAt, List<User> userByGender, List<User> userByPosition, List<User> userByRole) {
+    public AllCode(int id, String keyMap, String type, String valueVi, String valueEn, String createdAt, String updateAt, List<User> userByGender, List<User> userByPosition, List<User> userByRole) {
         this.id = id;
         this.keyMap = keyMap;
         this.type = type;
@@ -103,19 +122,19 @@ public class AllCode {
         this.valueEn = valueEn;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 

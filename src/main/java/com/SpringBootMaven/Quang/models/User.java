@@ -35,35 +35,34 @@ public class User {
     @Column
     private  String phonenumber;
     @Column
+    @JsonView(Views.Internal.class)
     private String image;
     @JsonView({Views.Public.class, Views.Custom.class})
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
-    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode positionData;
     @JsonView({Views.Public.class, Views.Custom.class})
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
-    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode genderData;
     @JsonView({Views.Public.class, Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
-    @NotFound(action = NotFoundAction.IGNORE)
     private AllCode roleData;
-    @Column
-    private Date createdAt;
+
+
 
     @Column
-    private Date updatedAt;
+    private String createdAt;
+
+    @Column
+    private String updatedAt;
 
 
     public User() {
     }
 
-    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, Date createdAt, Date updatedAt) {
+    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, String createdAt, String updatedAt) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -89,6 +88,7 @@ public class User {
     public String getEmail() {
         return email;
     }
+    @JsonView({Views.Public.class,Views.Custom.class})
 
     public void setEmail(String email) {
         this.email = email;
@@ -166,19 +166,19 @@ public class User {
         this.roleData = roleData;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 }

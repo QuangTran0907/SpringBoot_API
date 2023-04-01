@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User,Integer> {
-
-    User findByEmail(String name);
-
+public interface DoctorRepository  extends JpaRepository<Doctor_Infor,Integer> {
 
 
 }
