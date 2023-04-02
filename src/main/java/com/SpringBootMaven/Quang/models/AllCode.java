@@ -1,5 +1,6 @@
 package com.SpringBootMaven.Quang.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 
@@ -12,51 +13,41 @@ import java.util.Set;
 public class AllCode {
     @Id
     @Column
-    @JsonView(Views.Public.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "keyMap",unique = true,nullable = false)
-    @JsonView(Views.Public.class)
     private String keyMap;
     @Column(name = "type")
-    @JsonView(Views.Public.class)
     private String type;
-    @JsonView({Views.Public.class, Views.Custom.class})
+
+    @JsonView({Views.Public.class,Views.Custom.class})
     @Column(name = "valueVi")
     private String valueVi;
-    @JsonView({Views.Public.class, Views.Custom.class})
+    @JsonView({Views.Public.class,Views.Custom.class})
     @Column(name = "valueEn")
     private String valueEn;
     @Column
-    @JsonView(Views.Public.class)
     private String createdAt;
     @Column
-    @JsonView(Views.Public.class)
     private String updateAt;
 
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "positionData")
     private List<User> userByPosition;
-
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "genderData")
     private List<User> userByGender;
-
-
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "roleData")
     private List<User> userByRole;
 
-
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "priceTypeData")
     private List<Doctor_Infor> doctorByPrice;
-
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "provinceTypeData")
     private List<Doctor_Infor> doctorByProvince;
-
-    @JsonView(Views.Custom.class)
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentTypeData")
     private List<Doctor_Infor> doctorByPayment;
 

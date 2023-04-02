@@ -3,11 +3,11 @@ package com.SpringBootMaven.Quang.models;
 import com.fasterxml.jackson.annotation.JsonView;
 
 public class Json_Response_User {
-    @JsonView({Views.Public.class, Views.Custom.class})
 
-    private int errCode;
     @JsonView({Views.Public.class,Views.Custom.class})
+    private int errCode;
 
+    @JsonView({Views.Public.class,Views.Custom.class})
     private String message;
     @JsonView({Views.Public.class,Views.Custom.class})
     private Object users;

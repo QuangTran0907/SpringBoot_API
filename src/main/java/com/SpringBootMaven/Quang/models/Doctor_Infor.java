@@ -11,15 +11,17 @@ public class Doctor_Infor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int doctorid;
-    @JsonView({Views.Public.class, Views.Custom.class})
+
+    @OneToOne
+    @JoinColumn(name = "doctor_id", referencedColumnName = "id")
+    private User user;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "priceid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode priceTypeData;
-    @JsonView({Views.Public.class, Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "provinceid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode provinceTypeData;
-    @JsonView({Views.Public.class, Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "paymentid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode paymentTypeData;

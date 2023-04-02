@@ -26,7 +26,7 @@ public class UserController {
 
 
     @GetMapping("/get-all-users")
-    @JsonView(Views.Public.class)
+    @JsonView(Views.Custom.class)
     ResponseEntity<Json_Response_User> getAllUser(@Param("id") String id)
     {
         List<User> users = repository.findAll();
@@ -34,8 +34,8 @@ public class UserController {
             if(id.isEmpty())
             {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                                new Json_Response_User(1,"Parameter missing",null )
-                        );
+                        new Json_Response_User(1,"Parameter missing",null )
+                );
             }
             else if (id.equals("ALL")){
                 return ResponseEntity.status(HttpStatus.OK).body(
@@ -61,12 +61,12 @@ public class UserController {
 
     boolean checkMail(String mail)
     {
-       User user = repository.findByEmail(mail);
-         if (user==null)
-         {
-             return false;
-         }
-         return true;
+        User user = repository.findByEmail(mail);
+        if (user==null)
+        {
+            return false;
+        }
+        return true;
 
     }
     @PostMapping("/create-new-user")
@@ -83,7 +83,7 @@ public class UserController {
         }
 
         try {
-            User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGenderData(),newUser.getImage(),newUser.getRoleData(),newUser.getPositionData(),newUser.getCreatedAt(),newUser.getUpdatedAt());
+            User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGenderData(),newUser.getImage(),newUser.getRoleData(),newUser.getPositionData(),newUser.getCreatedAt(),newUser.getUpdatedAt(),newUser.getDoctorInfo(),newUser.getMarkdownInfo());
             repository.save(user);
             System.out.println("hhahahhahahahahaha"+BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)));
 
@@ -114,7 +114,7 @@ public class UserController {
                         new Json_Response_User(1, "Parameter missing", null)
                 );
             }
-            User user = repository.findById(newUser.getId()).orElse(new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(10)), newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getPhonenumber(), newUser.getGenderData(), newUser.getImage(), newUser.getRoleData(), newUser.getPositionData(), newUser.getCreatedAt(), newUser.getUpdatedAt()));
+            User user = repository.findById(newUser.getId()).orElse(new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(10)), newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getPhonenumber(), newUser.getGenderData(), newUser.getImage(), newUser.getRoleData(), newUser.getPositionData(), newUser.getCreatedAt(), newUser.getUpdatedAt(),newUser.getDoctorInfo(),newUser.getMarkdownInfo()));
 
             if(user.getEmail()!="") {
                 user.setFirstName(newUser.getFirstName());
@@ -153,8 +153,9 @@ public class UserController {
         );
     }
 
-    @JsonView(Views.Custom.class)
+
     @PostMapping("/login")
+    @JsonView(Views.Public.class)
     ResponseEntity<Json_Response_User> handleLogin(@RequestBody User rq_user)
     {
 

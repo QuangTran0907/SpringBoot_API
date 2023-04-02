@@ -19,36 +19,45 @@ public class User {
     @Column
     private String email;
     @Column
-    @JsonView(Views.Custom.class)
+    @JsonView(Views.Public.class)
     private String password;
 
     @JsonView({Views.Public.class,Views.Custom.class})
     @Column
     private String firstName;
     @Column
-    @JsonView({Views.Public.class, Views.Custom.class})
+    @JsonView({Views.Public.class,Views.Custom.class})
     private String lastName;
-    @JsonView(Views.Public.class)
+
     @Column
+    @JsonView(Views.Custom.class)
     private  String address;
-    @JsonView(Views.Public.class)
+
     @Column
+    @JsonView(Views.Custom.class)
     private  String phonenumber;
     @Column
-    @JsonView(Views.Internal.class)
     private String image;
-    @JsonView({Views.Public.class, Views.Custom.class})
+
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonView(Views.Custom.class)
     @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode positionData;
-    @JsonView({Views.Public.class, Views.Custom.class})
+
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonView(Views.Custom.class)
     @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode genderData;
-    @JsonView({Views.Public.class, Views.Custom.class})
+    @JsonView({Views.Public.class,Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
     private AllCode roleData;
+
+    @OneToOne(mappedBy = "user")
+    private Doctor_Infor doctorInfo;
+
+    @OneToOne(mappedBy = "doctor")
+    private Markdown markdownInfo;
 
 
 
@@ -62,7 +71,7 @@ public class User {
     public User() {
     }
 
-    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, String createdAt, String updatedAt) {
+    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, String createdAt, String updatedAt,Doctor_Infor doctorInfo,Markdown markdownInfo) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -75,6 +84,24 @@ public class User {
         this.roleData = roleData;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.doctorInfo = doctorInfo;
+        this.markdownInfo = markdownInfo;
+    }
+
+    public Doctor_Infor getDoctorInfo() {
+        return doctorInfo;
+    }
+
+    public void setDoctorInfo(Doctor_Infor doctorInfo) {
+        this.doctorInfo = doctorInfo;
+    }
+
+    public Markdown getMarkdownInfo() {
+        return markdownInfo;
+    }
+
+    public void setMarkdownInfo(Markdown markdownInfo) {
+        this.markdownInfo = markdownInfo;
     }
 
     public int getId() {

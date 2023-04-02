@@ -1,8 +1,16 @@
 package com.SpringBootMaven.Quang.models;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class Json_Response {
+
+    @JsonView(Views.Public.class)
     private int errCode;
+
+    @JsonView(Views.Public.class)
     private String message;
+
+    @JsonView(Views.Public.class)
     private Object data;
 
     public Json_Response() {
