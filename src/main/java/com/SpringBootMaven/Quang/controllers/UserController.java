@@ -1,6 +1,8 @@
 package com.SpringBootMaven.Quang.controllers;
 
+import com.SpringBootMaven.Quang.models.Response.JsonAllUser;
 import com.SpringBootMaven.Quang.models.Response.JsonLogin;
+import com.SpringBootMaven.Quang.models.Response.JsonUser;
 import com.SpringBootMaven.Quang.models.Views;
 import com.SpringBootMaven.Quang.models.*;
 import com.SpringBootMaven.Quang.repositories.AllCodeRepository;
@@ -26,7 +28,7 @@ public class UserController {
 
 
     @CrossOrigin(origins = "http://localhost:3000")
-    @GetMapping("/get-all-users")
+    @GetMapping("/get-all-user")
     @JsonView(Views.Custom.class)
     ResponseEntity<Json_Response_User> getAllUser(@Param("id") String id)
     {
@@ -72,10 +74,10 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/create-new-user")
-    ResponseEntity<Json_Response> insertUser(@RequestBody User newUser)
+    ResponseEntity<Json_Response> insertUser(@RequestBody JsonUser jsonUser)
     {
 
-        if(checkMail(newUser.getEmail()))
+        if(checkMail(jsonUser.getEmail()))
         {
             return
                     ResponseEntity.status(HttpStatus.OK).body(
@@ -85,9 +87,20 @@ public class UserController {
         }
 
         try {
-            User user = new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)),newUser.getFirstName(),newUser.getLastName(),newUser.getAddress(),newUser.getPhonenumber(),newUser.getGenderData(),newUser.getImage(),newUser.getRoleData(),newUser.getPositionData(),newUser.getCreatedAt(),newUser.getUpdatedAt(),newUser.getDoctorInfo(),newUser.getMarkdownInfo());
+            User user = new User();
+            user.setPassword(BCrypt.hashpw(jsonUser.getPassword(),BCrypt.gensalt(10)));
+            user.setEmail(jsonUser.getEmail());
+            user.setPhonenumber(jsonUser.getPhonenumber());
+            user.setAddress(jsonUser.getAddress());
+            user.setFirstName(jsonUser.getFirstname());
+            user.setLastName((jsonUser.getLastname()));
+            user.setImage(jsonUser.getAvatar());
+            user.setGenderData(allCodeRepository.findByKeyMap(jsonUser.getGender()));
+            user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPosition()));
+            user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRole()));
+
             repository.save(user);
-            System.out.println("hhahahhahahahahaha"+BCrypt.hashpw(newUser.getPassword(),BCrypt.gensalt(10)));
+
 
             return
                     ResponseEntity.status(HttpStatus.OK).body(
@@ -106,30 +119,32 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/edit-user")
-    ResponseEntity<Json_Response_User> updateProduct(@RequestBody User newUser)
+    ResponseEntity<Json_Response_User> updateProduct(@RequestBody JsonUser jsonUser)
     {
 
 
         try {
-            if(newUser==null)
+            if(jsonUser==null)
             {
                 return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
                         new Json_Response_User(1, "Parameter missing", null)
                 );
             }
-            User user = repository.findById(newUser.getId()).orElse(new User(newUser.getEmail(), BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt(10)), newUser.getFirstName(), newUser.getLastName(), newUser.getAddress(), newUser.getPhonenumber(), newUser.getGenderData(), newUser.getImage(), newUser.getRoleData(), newUser.getPositionData(), newUser.getCreatedAt(), newUser.getUpdatedAt(),newUser.getDoctorInfo(),newUser.getMarkdownInfo()));
+            User user = repository.findByEmail(jsonUser.getEmail());
+            user.setPassword(BCrypt.hashpw(jsonUser.getPassword(),BCrypt.gensalt(10)));
+            user.setEmail(jsonUser.getEmail());
+            user.setPhonenumber(jsonUser.getPhonenumber());
+            user.setAddress(jsonUser.getAddress());
+            user.setFirstName(jsonUser.getFirstname());
+            user.setLastName((jsonUser.getLastname()));
+            user.setImage(jsonUser.getAvatar());
+            user.setGenderData(allCodeRepository.findByKeyMap(jsonUser.getGender()));
+            user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPosition()));
+            user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRole()));
 
-            if(user.getEmail()!="") {
-                user.setFirstName(newUser.getFirstName());
-                user.setLastName(newUser.getLastName());
-                user.setAddress(newUser.getAddress());
-                repository.save(user);
-                return ResponseEntity.status(HttpStatus.OK).body(
-                        new Json_Response_User(0, "Edit user success", null)
-                );
-            }
+            repository.save(user);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new Json_Response_User(3, "Error", null)
+                    new Json_Response_User(0, "Insert ngon lanh", null)
             );
 
         }catch (Exception e)
@@ -143,7 +158,7 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/delete-user")
-    ResponseEntity<Json_Response_User> deleteProduct(@Param("id") String id)
+    ResponseEntity<Json_Response_User> deleteProduct(@RequestBody String id)
     {
         boolean exists = repository.existsById(Integer.parseInt(id));
         if (!exists){

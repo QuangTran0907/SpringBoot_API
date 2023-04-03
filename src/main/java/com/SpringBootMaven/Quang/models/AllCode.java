@@ -16,6 +16,7 @@ public class AllCode {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "keyMap",unique = true,nullable = false)
+    @JsonView({Views.Public.class,Views.Custom.class})
     private String keyMap;
     @Column(name = "type")
     private String type;
