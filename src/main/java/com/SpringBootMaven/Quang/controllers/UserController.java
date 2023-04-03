@@ -1,5 +1,6 @@
 package com.SpringBootMaven.Quang.controllers;
 
+import com.SpringBootMaven.Quang.models.Response.JsonLogin;
 import com.SpringBootMaven.Quang.models.Views;
 import com.SpringBootMaven.Quang.models.*;
 import com.SpringBootMaven.Quang.repositories.AllCodeRepository;
@@ -165,11 +166,12 @@ public class UserController {
         User user = repository.findByEmail(rq_user.getEmail().trim());
         if(user!=null)
         {
+            JsonLogin userJson = new JsonLogin(user.getId(),user.getEmail(),user.getRoleData().getKeyMap(),user.getFirstName(),user.getLastName());
             Boolean checkpwd =  BCrypt.checkpw(rq_user.getPassword(),user.getPassword());
             if (checkpwd)
             {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new Json_Response_User(0,"OK", user)
+                        new Json_Response_User(0,"OK", userJson)
                 );
             }
             else {
