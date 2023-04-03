@@ -24,7 +24,7 @@ public class UserController {
     private AllCodeRepository allCodeRepository;
 
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-all-users")
     @JsonView(Views.Custom.class)
     ResponseEntity<Json_Response_User> getAllUser(@Param("id") String id)
@@ -69,6 +69,7 @@ public class UserController {
         return true;
 
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/create-new-user")
     ResponseEntity<Json_Response> insertUser(@RequestBody User newUser)
     {
@@ -102,6 +103,7 @@ public class UserController {
         }
 
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/edit-user")
     ResponseEntity<Json_Response_User> updateProduct(@RequestBody User newUser)
     {
@@ -138,6 +140,7 @@ public class UserController {
 
 
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/delete-user")
     ResponseEntity<Json_Response_User> deleteProduct(@Param("id") String id)
     {
@@ -153,7 +156,7 @@ public class UserController {
         );
     }
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/login")
     @JsonView(Views.Public.class)
     ResponseEntity<Json_Response_User> handleLogin(@RequestBody User rq_user)
@@ -182,6 +185,7 @@ public class UserController {
         }
 
     }
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/allcodes")
     ResponseEntity<Json_Response> getAllCodes(@Param("type") String type)
     {
