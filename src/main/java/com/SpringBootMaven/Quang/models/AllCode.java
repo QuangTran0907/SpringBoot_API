@@ -29,7 +29,7 @@ public class AllCode {
     @Column
     private String createdAt;
     @Column
-    private String updateAt;
+    private String updatedAt;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "positionData")
@@ -51,6 +51,10 @@ public class AllCode {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentTypeData")
     private List<Doctor_Infor> doctorByPayment;
 
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "timeTypeData")
+    private List<Schedule> timeTypeData;
+
 
 
 
@@ -60,14 +64,14 @@ public class AllCode {
     public AllCode() {
     }
 
-    public AllCode(int id, String keyMap, String type, String valueVi, String valueEn, String createdAt, String updateAt, List<User> userByGender, List<User> userByPosition, List<User> userByRole) {
+    public AllCode(int id, String keyMap, String type, String valueVi, String valueEn, String createdAt, String updatedAt, List<User> userByGender, List<User> userByPosition, List<User> userByRole) {
         this.id = id;
         this.keyMap = keyMap;
         this.type = type;
         this.valueVi = valueVi;
         this.valueEn = valueEn;
         this.createdAt = createdAt;
-        this.updateAt = updateAt;
+        this.updatedAt = updatedAt;
         this.userByGender = userByGender;
         this.userByPosition = userByPosition;
         this.userByRole = userByRole;
@@ -122,11 +126,11 @@ public class AllCode {
     }
 
     public String getUpdateAt() {
-        return updateAt;
+        return updatedAt;
     }
 
-    public void setUpdateAt(String updateAt) {
-        this.updateAt = updateAt;
+    public void setUpdateAt(String updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public List<User> getUserByGender() {
@@ -151,5 +155,24 @@ public class AllCode {
 
     public void setUserByRole(List<User> userByRole) {
         this.userByRole = userByRole;
+    }
+
+    @Override
+    public String toString() {
+        return "AllCode{" +
+                "id=" + id +
+                ", keyMap='" + keyMap + '\'' +
+                ", type='" + type + '\'' +
+                ", valueVi='" + valueVi + '\'' +
+                ", valueEn='" + valueEn + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", userByPosition=" + userByPosition +
+                ", userByGender=" + userByGender +
+                ", userByRole=" + userByRole +
+                ", doctorByPrice=" + doctorByPrice +
+                ", doctorByProvince=" + doctorByProvince +
+                ", doctorByPayment=" + doctorByPayment +
+                '}';
     }
 }

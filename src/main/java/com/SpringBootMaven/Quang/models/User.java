@@ -1,11 +1,13 @@
 package com.SpringBootMaven.Quang.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -41,23 +43,30 @@ public class User {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonView(Views.Custom.class)
-    @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JoinColumn(name = "positionid", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode positionData;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonView(Views.Custom.class)
-    @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JoinColumn(name = "gender", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode genderData;
     @JsonView({Views.Public.class,Views.Custom.class})
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JoinColumn(name = "roleid", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode roleData;
 
-    @OneToOne(mappedBy = "user")
-    private Doctor_Infor doctorInfo;
 
+
+    @JsonView(Views.Custom.class)
+    @OneToOne(mappedBy = "user")
+    private Doctor_Infor Doctor_Infor;
+    @JsonView(Views.Custom.class)
     @OneToOne(mappedBy = "doctor")
-    private Markdown markdownInfo;
+    private Markdown Markdown;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctorData")
+    private List<Schedule> doctorData;
 
 
 
@@ -71,7 +80,7 @@ public class User {
     public User() {
     }
 
-    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, String createdAt, String updatedAt,Doctor_Infor doctorInfo,Markdown markdownInfo) {
+    public User(String email, String hashpw, String firstName, String lastName, String address, String phonenumber, AllCode genderData, String image, AllCode roleData, AllCode positionData, String createdAt, String updatedAt,Doctor_Infor Doctor_Infor,Markdown Markdown) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -84,24 +93,24 @@ public class User {
         this.roleData = roleData;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.doctorInfo = doctorInfo;
-        this.markdownInfo = markdownInfo;
+        this.Doctor_Infor = Doctor_Infor;
+        this.Markdown = Markdown;
     }
 
     public Doctor_Infor getDoctorInfo() {
-        return doctorInfo;
+        return Doctor_Infor;
     }
 
-    public void setDoctorInfo(Doctor_Infor doctorInfo) {
-        this.doctorInfo = doctorInfo;
+    public void setDoctorInfo(Doctor_Infor Doctor_Infor) {
+        this.Doctor_Infor = Doctor_Infor;
     }
 
     public Markdown getMarkdownInfo() {
-        return markdownInfo;
+        return Markdown;
     }
 
-    public void setMarkdownInfo(Markdown markdownInfo) {
-        this.markdownInfo = markdownInfo;
+    public void setMarkdownInfo(Markdown Markdown) {
+        this.Markdown = Markdown;
     }
 
     public int getId() {

@@ -1,8 +1,5 @@
 package com.SpringBootMaven.Quang.controllers;
-import com.SpringBootMaven.Quang.models.Json_Response;
-import com.SpringBootMaven.Quang.models.Json_Response_User;
-import com.SpringBootMaven.Quang.models.User;
-import com.SpringBootMaven.Quang.models.Views;
+import com.SpringBootMaven.Quang.models.*;
 import com.SpringBootMaven.Quang.repositories.UserRepository;
 import com.SpringBootMaven.Quang.services.DoctorService;
 import com.SpringBootMaven.Quang.services.DoctorService;
@@ -12,10 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -83,15 +77,15 @@ public class DoctorController {
     }
 
     @JsonView(Views.Custom.class)
-    @PostMapping("/post-infor-doctor")
-    ResponseEntity<Json_Response_User> postinfordoctor()
+    @GetMapping("/getdetailDoctor")
+    ResponseEntity<Json_Response_User> getdetailDoctorSV(@Param("id")String id)
     {
 
         try {
-            List<User> doctors = docterService.findUsersByRoleDataKey("R2");
+            User doctor = userRepository.findById(Integer.parseInt(id)).orElse(new User());
             return
                     ResponseEntity.status(HttpStatus.OK).body(
-                            new Json_Response_User(0,"OK",doctors)
+                            new Json_Response_User(0,"OK",doctor)
 
                     );
 
@@ -104,6 +98,145 @@ public class DoctorController {
         }
 
     }
+
+
+
+    @JsonView(Views.Custom.class)
+    @PostMapping("/post-infor-doctor")
+    ResponseEntity<Json_Response_User> postinfordoctor(@RequestBody Json_Doctor_Request inputData)
+    {
+
+        try {
+            String message = docterService.saveDetailDoctor(inputData);
+            return
+                    ResponseEntity.status(HttpStatus.OK).body(
+                            new Json_Response_User(0,"OK",message)
+
+                    );
+
+        }catch (Exception e)
+        {
+            return
+                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                            new Json_Response_User(1,"Parameter missing",e)
+                    );
+        }
+
+
+
+
+    }
+
+    @GetMapping("/get-schedule-doctor-by-date")
+    ResponseEntity<Json_Response_User> getScheduleByDate(@Param("doctorid")String doctorid,@Param("date")String date)
+    {
+
+        try {
+            if(doctorid==null||date==null) {
+                return
+                        ResponseEntity.status(HttpStatus.OK).body(
+                                new Json_Response_User(1,"OK","Param is missing")
+
+                        );
+            }else {
+
+
+                return docterService.getScheduleByDate(doctorid,date);
+                        
+            }
+            
+
+        }catch (Exception e)
+        {
+            System.out.println(e.toString());
+            return
+                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                            new Json_Response_User(1,"Parameter missing",null)
+
+                    );
+        }
+
+
+
+
+    }
+
+    @GetMapping("/get-extra-infor-doctor-by-id")
+    ResponseEntity<Json_Response_User> getExtraInforDoctorById(@Param("idInput")String doctorid)
+    {
+
+        try {
+            if(doctorid==null) {
+                return
+                        ResponseEntity.status(HttpStatus.OK).body(
+                                new Json_Response_User(1,"OK","Param is missing")
+
+                        );
+            }else {
+
+
+                return docterService.getExtraInforDoctorById(doctorid);
+
+            }
+
+
+        }catch (Exception e)
+        {
+            System.out.println(e.toString());
+            return
+                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                            new Json_Response_User(1,"Parameter missing",null)
+
+                    );
+        }
+
+
+
+
+    }
+    @JsonView(Views.Custom.class)
+    @GetMapping("/get-profile-doctor-by-id")
+    ResponseEntity<Json_Response_User> getProfileDoctorById(@Param("doctorid")String doctorid)
+    {
+
+        try {
+            if(doctorid==null) {
+                return
+                        ResponseEntity.status(HttpStatus.OK).body(
+                                new Json_Response_User(1,"OK","Param is missing")
+
+                        );
+            }else {
+
+
+                return docterService.getProfileDoctorById(doctorid);
+
+            }
+
+
+        }catch (Exception e)
+        {
+            System.out.println(e.toString());
+            return
+                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                            new Json_Response_User(1,"Parameter missing",null)
+
+                    );
+        }
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 

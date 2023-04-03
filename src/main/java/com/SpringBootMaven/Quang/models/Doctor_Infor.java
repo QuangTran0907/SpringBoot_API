@@ -1,5 +1,6 @@
 package com.SpringBootMaven.Quang.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -10,34 +11,45 @@ public class Doctor_Infor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int doctorid;
+
+
 
     @OneToOne
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "priceid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JsonView(Views.Custom.class)
+    @JoinColumn(name = "priceid", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode priceTypeData;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "provinceid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JsonView(Views.Custom.class)
+    @JoinColumn(name = "provinceid", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode provinceTypeData;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "paymentid", referencedColumnName = "keyMap",insertable = false, updatable = false,nullable = false)
+    @JsonView(Views.Custom.class)
+    @JoinColumn(name = "paymentid", referencedColumnName = "keyMap",insertable = true, updatable = true,nullable = true)
     private AllCode paymentTypeData;
+    @JsonView(Views.Custom.class)
     private String addressClinic;
+    @JsonView(Views.Custom.class)
     private String nameClinic;
+    @JsonView(Views.Custom.class)
     private String note;
+    @JsonView(Views.Custom.class)
     private int count;
+    @JsonView(Views.Custom.class)
     private String createdAt;
+    @JsonView(Views.Custom.class)
     private String updatedAt;
 
     public Doctor_Infor() {
     }
 
-    public Doctor_Infor(int id, int doctorid, AllCode priceTypeData, AllCode provinceTypeData, AllCode paymentTypeData, String addressClinic, String nameClinic, String note, int count, String createdAt, String updatedAt) {
+
+    public Doctor_Infor(int id, User user, AllCode priceTypeData, AllCode provinceTypeData, AllCode paymentTypeData, String addressClinic, String nameClinic, String note, int count, String createdAt, String updatedAt) {
         this.id = id;
-        this.doctorid = doctorid;
+        this.user = user;
         this.priceTypeData = priceTypeData;
         this.provinceTypeData = provinceTypeData;
         this.paymentTypeData = paymentTypeData;
@@ -48,24 +60,13 @@ public class Doctor_Infor {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-    @Override
-    public String toString() {
-        return "Doctor_Infor{" +
-                "id=" + id +
-                ", doctorid=" + doctorid +
-                ", priceTypeData=" + priceTypeData +
-                ", provinceTypeData=" + provinceTypeData +
-                ", paymentTypeData=" + paymentTypeData +
-                ", addressClinic='" + addressClinic + '\'' +
-                ", nameClinic='" + nameClinic + '\'' +
-                ", note='" + note + '\'' +
-                ", count=" + count +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                '}';
+    public User getUser() {
+        return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
     public int getId() {
         return id;
     }
@@ -74,13 +75,7 @@ public class Doctor_Infor {
         this.id = id;
     }
 
-    public int getDoctorid() {
-        return doctorid;
-    }
 
-    public void setDoctorid(int doctorid) {
-        this.doctorid = doctorid;
-    }
 
     public AllCode getPriceTypeData() {
         return priceTypeData;
