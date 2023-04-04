@@ -68,7 +68,7 @@ public class PatientService {
             return "Missing parameter";
         }
         else {
-         Booking appointment = bookingRepository.findByDocteridAndTockenAndStatusid(jsonPatientRequest.getDoctorid(),jsonPatientRequest.getToken(),"S1");
+         Booking appointment = bookingRepository.findByDoctorIdAndTokenAndStatusId(jsonPatientRequest.getDoctorid(),jsonPatientRequest.getToken(),"S1");
         if(appointment!=null){
             appointment.setStatusId("S2");
             bookingRepository.save(appointment);
