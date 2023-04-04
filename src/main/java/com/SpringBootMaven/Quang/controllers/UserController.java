@@ -24,6 +24,13 @@ public class UserController {
     @Autowired
     private AllCodeRepository allCodeRepository;
 
+    String html = "Chào quang";
+
+    public UserController(UserRepository repository, AllCodeRepository allCodeRepository) {
+        this.repository = repository;
+        this.allCodeRepository = allCodeRepository;
+    }
+
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-all-user")
