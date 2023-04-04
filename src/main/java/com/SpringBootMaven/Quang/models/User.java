@@ -15,6 +15,7 @@ import java.util.List;
 public class User {
     @Id
     @Column
+    @JsonView({Views.Public.class,Views.Custom.class})
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @JsonView({Views.Public.class,Views.Custom.class})

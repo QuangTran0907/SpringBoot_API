@@ -1,8 +1,6 @@
 package com.SpringBootMaven.Quang.controllers;
 
-import com.SpringBootMaven.Quang.models.Response.JsonAllUser;
-import com.SpringBootMaven.Quang.models.Response.JsonLogin;
-import com.SpringBootMaven.Quang.models.Response.JsonUser;
+import com.SpringBootMaven.Quang.models.Response.*;
 import com.SpringBootMaven.Quang.models.Views;
 import com.SpringBootMaven.Quang.models.*;
 import com.SpringBootMaven.Quang.repositories.AllCodeRepository;
@@ -30,24 +28,24 @@ public class UserController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-all-user")
     @JsonView(Views.Custom.class)
-    ResponseEntity<Json_Response_User> getAllUser(@Param("id") String id)
+    ResponseEntity<Json_Response_Users> getAllUser(@Param("id") String id)
     {
         List<User> users = repository.findAll();
         try {
             if(id.isEmpty())
             {
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new Json_Response_User(1,"Parameter missing",null )
+                        new Json_Response_Users(1,"Parameter missing",null )
                 );
             }
             else if (id.equals("ALL")){
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new Json_Response_User(0,"Get all users successfully",users )
+                        new Json_Response_Users(0,"Get all users successfully",users )
                 );
             }else {
                 User user = repository.findById(Integer.parseInt(id)).orElse(null);
                 return ResponseEntity.status(HttpStatus.OK).body(
-                        new Json_Response_User(0,"oke",user)
+                        new Json_Response_Users(0,"oke",user)
 
                 );
             }
@@ -55,7 +53,7 @@ public class UserController {
         {
             System.out.println(e);
             return  ResponseEntity.status(HttpStatus.OK).body(
-                    new Json_Response_User(0,e.toString(),null)
+                    new Json_Response_Users(0,e.toString(),null)
 
             );
         }
@@ -64,8 +62,8 @@ public class UserController {
 
     boolean checkMail(String mail)
     {
-        User user = repository.findByEmail(mail);
-        if (user==null)
+        User users = repository.findByEmail(mail);
+        if (users==null)
         {
             return false;
         }
@@ -92,12 +90,12 @@ public class UserController {
             user.setEmail(jsonUser.getEmail());
             user.setPhonenumber(jsonUser.getPhonenumber());
             user.setAddress(jsonUser.getAddress());
-            user.setFirstName(jsonUser.getFirstname());
-            user.setLastName((jsonUser.getLastname()));
+            user.setFirstName(jsonUser.getFirstName());
+            user.setLastName((jsonUser.getLastName()));
             user.setImage(jsonUser.getAvatar());
             user.setGenderData(allCodeRepository.findByKeyMap(jsonUser.getGender()));
-            user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPosition()));
-            user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRole()));
+            user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPositionid()));
+            user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRoleid()));
 
             repository.save(user);
 
@@ -111,7 +109,7 @@ public class UserController {
         }catch (Exception e)
         {
             return
-                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                    ResponseEntity.status(HttpStatus.OK).body(
                             new Json_Response(1,"Parameter missing",null)
                     );
         }
@@ -122,34 +120,34 @@ public class UserController {
     ResponseEntity<Json_Response_User> updateProduct(@RequestBody JsonUser jsonUser)
     {
 
+        System.out.println("Check" + jsonUser.toString());
 
         try {
-            if(jsonUser==null)
+            if(jsonUser.getEmail()==null || jsonUser.getFirstName() == null || jsonUser.getLastName() == null
+                    || jsonUser.getAddress() == null || jsonUser.getPhonenumber()==null )
             {
-                return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                return ResponseEntity.status(HttpStatus.OK).body(
                         new Json_Response_User(1, "Parameter missing", null)
                 );
+            }else {
+                User user = repository.findByEmail(jsonUser.getEmail());
+                user.setEmail(jsonUser.getEmail());
+                user.setPhonenumber(jsonUser.getPhonenumber());
+                user.setAddress(jsonUser.getAddress());
+                user.setFirstName(jsonUser.getFirstName());
+                user.setLastName((jsonUser.getLastName()));
+                user.setImage(jsonUser.getAvatar());
+                user.setGenderData(allCodeRepository.findByKeyMap(jsonUser.getGender()));
+                user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPositionid()));
+                user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRoleid()));
+                repository.save(user);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new Json_Response_User(0, "Insert ngon lanh", null)
+                );
             }
-            User user = repository.findByEmail(jsonUser.getEmail());
-            user.setPassword(BCrypt.hashpw(jsonUser.getPassword(),BCrypt.gensalt(10)));
-            user.setEmail(jsonUser.getEmail());
-            user.setPhonenumber(jsonUser.getPhonenumber());
-            user.setAddress(jsonUser.getAddress());
-            user.setFirstName(jsonUser.getFirstname());
-            user.setLastName((jsonUser.getLastname()));
-            user.setImage(jsonUser.getAvatar());
-            user.setGenderData(allCodeRepository.findByKeyMap(jsonUser.getGender()));
-            user.setPositionData(allCodeRepository.findByKeyMap(jsonUser.getPosition()));
-            user.setRoleData(allCodeRepository.findByKeyMap(jsonUser.getRole()));
-
-            repository.save(user);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    new Json_Response_User(0, "Insert ngon lanh", null)
-            );
-
         }catch (Exception e)
         {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            return ResponseEntity.status(HttpStatus.OK).body(
                     new Json_Response_User(3, "Error", null)
             );
         }
@@ -158,15 +156,16 @@ public class UserController {
     }
     @CrossOrigin(origins = "http://localhost:3000")
     @DeleteMapping("/delete-user")
-    ResponseEntity<Json_Response_User> deleteProduct(@RequestBody String id)
+    ResponseEntity<Json_Response_User> deleteProduct(@RequestBody JonDeleteUser jonDeleteUser)
     {
-        boolean exists = repository.existsById(Integer.parseInt(id));
+
+        boolean exists = repository.existsById(Integer.parseInt(jonDeleteUser.getId()));
         if (!exists){
-            return  ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+            return  ResponseEntity.status(HttpStatus.OK).body(
                     new Json_Response_User(2,"There are no user you chose ",null)
             );
         }
-        repository.deleteById(Integer.parseInt(id));
+        repository.deleteById(Integer.parseInt(jonDeleteUser.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(
                 new Json_Response_User(0,"Delete user successfully", null)
         );

@@ -4,31 +4,14 @@ public class JsonUser {
     private int id;
     private String email;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String address;
     private String phonenumber;
     private String gender;
     private String roleid;
     private String positionid;
     private String avatar;
-
-    public JsonUser() {
-    }
-
-    public JsonUser(int id, String email, String password, String firstname, String lastname, String address, String phonenumber, String gender, String roleid, String positionid, String avatar) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.address = address;
-        this.phonenumber = phonenumber;
-        this.gender = gender;
-        this.roleid = roleid;
-        this.positionid = positionid;
-        this.avatar = avatar;
-    }
 
     public int getId() {
         return id;
@@ -54,20 +37,20 @@ public class JsonUser {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getAddress() {
@@ -94,19 +77,19 @@ public class JsonUser {
         this.gender = gender;
     }
 
-    public String getRole() {
+    public String getRoleid() {
         return roleid;
     }
 
-    public void setRole(String roleid) {
+    public void setRoleid(String roleid) {
         this.roleid = roleid;
     }
 
-    public String getPosition() {
+    public String getPositionid() {
         return positionid;
     }
 
-    public void setPosition(String positionid) {
+    public void setPositionid(String positionid) {
         this.positionid = positionid;
     }
 
@@ -116,5 +99,39 @@ public class JsonUser {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public JsonUser() {
+    }
+
+    public JsonUser(int id, String email, String password, String firstName, String lastName, String address, String phonenumber, String gender, String roleid, String positionid, String avatar) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phonenumber = phonenumber;
+        this.gender = gender;
+        this.roleid = roleid;
+        this.positionid = positionid;
+        this.avatar = avatar;
+    }
+
+    @Override
+    public String toString() {
+        return "JsonUser{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", phonenumber='" + phonenumber + '\'' +
+                ", gender='" + gender + '\'' +
+                ", roleid='" + roleid + '\'' +
+                ", positionid='" + positionid + '\'' +
+                ", avatar='" + avatar + '\'' +
+                '}';
     }
 }

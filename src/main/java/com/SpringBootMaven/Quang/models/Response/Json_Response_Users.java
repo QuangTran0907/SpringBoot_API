@@ -1,8 +1,9 @@
-package com.SpringBootMaven.Quang.models;
+package com.SpringBootMaven.Quang.models.Response;
 
+import com.SpringBootMaven.Quang.models.Views;
 import com.fasterxml.jackson.annotation.JsonView;
 
-public class Json_Response_User {
+public class Json_Response_Users {
 
     @JsonView({Views.Public.class,Views.Custom.class})
     private int errCode;
@@ -10,15 +11,15 @@ public class Json_Response_User {
     @JsonView({Views.Public.class,Views.Custom.class})
     private String message;
     @JsonView({Views.Public.class,Views.Custom.class})
-    private Object user;
+    private Object users;
 
-    public Json_Response_User() {
+    public Json_Response_Users() {
     }
 
-    public Json_Response_User(int errCode, String message, Object user) {
+    public Json_Response_Users(int errCode, String message, Object users) {
         this.errCode = errCode;
         this.message = message;
-        this.user = user;
+        this.users = users;
     }
 
     public int getErrCode() {
@@ -38,11 +39,11 @@ public class Json_Response_User {
     }
 
     public Object getUsers() {
-        return user;
+        return users;
     }
 
-    public void setUsers(Object user) {
-        this.user = user;
+    public void setUsers(Object users) {
+        this.users = users;
     }
 
     @Override
@@ -50,7 +51,7 @@ public class Json_Response_User {
         return "ResponseObject{" +
                 "status='" + errCode + '\'' +
                 ", message='" + message + '\'' +
-                ", data='" + user + '\'' +
+                ", data='" + users + '\'' +
                 '}';
     }
 }
