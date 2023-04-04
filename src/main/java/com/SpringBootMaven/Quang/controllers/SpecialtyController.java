@@ -22,6 +22,7 @@ public class SpecialtyController {
     }
 
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/create-new-specialty")
     ResponseEntity<Json_Response_User> createSpecialty(@RequestBody Specialty specialty)
     {
@@ -46,6 +47,7 @@ public class SpecialtyController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-specialty")
     ResponseEntity<Json_Response_User> getAllSpecialty()
     {
@@ -81,6 +83,7 @@ public class SpecialtyController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-detail-specialty-by-id")
     ResponseEntity<Json_Response_User> getDetailSpecialtyById(@Param("id") String id)
     {

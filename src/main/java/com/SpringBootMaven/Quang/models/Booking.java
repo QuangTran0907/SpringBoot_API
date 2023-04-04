@@ -12,16 +12,17 @@ public class Booking {
     private String statusId;
     private int doctorId;
     private int patientId;
-    private Date date;
+    private String date;
     private String timeType;
-    private Date createdAt;
-    private Date updateAt;
-
+    private String createdAt;
+    private String updateAt;
+    private String token;
     public Booking() {
     }
 
-    public Booking(int id, String statusId, int doctorId, int patientId, Date date, String timeType, Date createdAt, Date updateAt) {
+    public Booking(int id, String statusId, int doctorId, int patientId, String date, String timeType, String createdAt, String updateAt, String token) {
         this.id = id;
+        this.token = token;
         this.statusId = statusId;
         this.doctorId = doctorId;
         this.patientId = patientId;
@@ -47,6 +48,14 @@ public class Booking {
         this.statusId = statusId;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public int getDoctorId() {
         return doctorId;
     }
@@ -63,11 +72,11 @@ public class Booking {
         this.patientId = patientId;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -79,19 +88,19 @@ public class Booking {
         this.timeType = timeType;
     }
 
-    public Date getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Date getUpdateAt() {
+    public String getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(String updateAt) {
         this.updateAt = updateAt;
     }
 
@@ -102,10 +111,10 @@ public class Booking {
                 ", statusId='" + statusId + '\'' +
                 ", doctorId=" + doctorId +
                 ", patientId=" + patientId +
-                ", date=" + date +
+                ", date='" + date + '\'' +
                 ", timeType='" + timeType + '\'' +
-                ", createdAt=" + createdAt +
-                ", updateAt=" + updateAt +
+                ", createdAt='" + createdAt + '\'' +
+                ", updateAt='" + updateAt + '\'' +
                 '}';
     }
 }

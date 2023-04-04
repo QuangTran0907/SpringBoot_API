@@ -22,6 +22,7 @@ public class ClinicController {
     }
 
     @PostMapping("/create-new-clinic")
+    @CrossOrigin(origins = "http://localhost:3000")
     ResponseEntity<Json_Response_User> createClinic(@RequestBody Clinic clinic)
     {
 
@@ -46,6 +47,7 @@ public class ClinicController {
     }
 
     @GetMapping("/get-clinic")
+    @CrossOrigin(origins = "http://localhost:3000")
     ResponseEntity<Json_Response_User> getAllClinic()
     {
 
@@ -81,6 +83,7 @@ public class ClinicController {
     }
 
     @GetMapping("/get-detail-clinic-by-id")
+    @CrossOrigin(origins = "http://localhost:3000")
     ResponseEntity<Json_Response_User> getDetailClinicById(@Param("id") String id)
     {
 

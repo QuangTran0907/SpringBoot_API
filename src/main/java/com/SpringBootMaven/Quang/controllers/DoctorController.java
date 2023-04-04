@@ -29,6 +29,7 @@ public class DoctorController {
 
 
     @JsonView(Views.Custom.class)
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/top-doctor-home")
     ResponseEntity<Json_Response_User> getTopDoctorHome(@Param("limit")String limit)
     {
@@ -54,6 +55,7 @@ public class DoctorController {
 
 
     @JsonView(Views.Custom.class)
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-all-doctor")
     ResponseEntity<Json_Response_User> getAllDoctors()
     {
@@ -77,6 +79,7 @@ public class DoctorController {
     }
 
     @JsonView(Views.Custom.class)
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getdetailDoctor")
     ResponseEntity<Json_Response_User> getdetailDoctorSV(@Param("id")String id)
     {
@@ -102,6 +105,7 @@ public class DoctorController {
 
 
     @JsonView(Views.Custom.class)
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/post-infor-doctor")
     ResponseEntity<Json_Response_User> postinfordoctor(@RequestBody Json_Doctor_Request inputData)
     {
@@ -128,6 +132,7 @@ public class DoctorController {
     }
 
     @GetMapping("/get-schedule-doctor-by-date")
+    @CrossOrigin(origins = "http://localhost:3000")
     ResponseEntity<Json_Response_User> getScheduleByDate(@Param("doctorid")String doctorid,@Param("date")String date)
     {
 
@@ -162,6 +167,7 @@ public class DoctorController {
     }
 
     @GetMapping("/get-extra-infor-doctor-by-id")
+    @CrossOrigin(origins = "http://localhost:3000")
     ResponseEntity<Json_Response_User> getExtraInforDoctorById(@Param("idInput")String doctorid)
     {
 
@@ -195,6 +201,7 @@ public class DoctorController {
 
     }
     @JsonView(Views.Custom.class)
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-profile-doctor-by-id")
     ResponseEntity<Json_Response_User> getProfileDoctorById(@Param("doctorid")String doctorid)
     {
