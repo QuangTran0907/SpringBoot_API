@@ -2,11 +2,13 @@ package com.SpringBootMaven.Quang.services;
 
 import com.SpringBootMaven.Quang.models.*;
 import com.SpringBootMaven.Quang.repositories.*;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,6 +18,7 @@ public class DoctorService {
     private final Doctor_InforRePository doctorInforRePository;
     private final AllCodeRepository allCodeRepository;
     private final ScheduleRepository scheduleRepository;
+    private final int MAX_NUMBER_SCHUEDULE = 10;
 
     public DoctorService(UserRepository userRepository, MarkDownRePository markDownRePository, Doctor_InforRePository doctorInforRePository, AllCodeRepository allCodeRepository, ScheduleRepository scheduleRepository) {
         this.userRepository = userRepository;
@@ -169,6 +172,32 @@ public class DoctorService {
                     );
         }
 
+    }
+
+    public String bulkCreateSchedule(List<Schedule> arrSchedule, String doctorid, String formatedDate) {
+        try {
+            if (arrSchedule == null || arrSchedule.size() == 0 || doctorid == null || formatedDate == null) {
+                return "Missing required param!";
+            }
+
+            List<Schedule> toCreate = new ArrayList<>();
+            for (Schedule item : arrSchedule) {
+                item.setMaxNumber(MAX_NUMBER_SCHUEDULE);
+                Schedule existing = scheduleRepository.findByTimeTypeDataKeyMapAndDateAndDoctorDataId(item.getTimeTypeData().getKeyMap(), item.getDate(), doctorid);
+                if (existing == null) {
+                    toCreate.add(item);
+                }
+            }
+
+            if (!toCreate.isEmpty()) {
+                scheduleRepository.saveAll(toCreate);
+                return "Add oke";
+            }
+
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage(), ex);
+        }
+        return "error";
     }
 
 

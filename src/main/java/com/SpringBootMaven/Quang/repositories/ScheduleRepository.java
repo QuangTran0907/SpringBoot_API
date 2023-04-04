@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule,Integer> {
     List<Schedule> findByDoctorDataIdAndDate(String doctorid, String date);
-
+    Schedule findByTimeTypeDataKeyMapAndDateAndDoctorDataId(String typeTime,String date,String doctorId);
 }

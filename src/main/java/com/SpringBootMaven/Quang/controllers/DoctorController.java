@@ -200,6 +200,31 @@ public class DoctorController {
 
 
     }
+
+    @JsonView(Views.Custom.class)
+    @PostMapping("/bulk-create-schedule")
+    ResponseEntity<Json_Response_User> bulkCreateSchedule(@Param("arrSchedule")List<Schedule> arrSchedule,@Param("doctorid") String doctorid,@Param("formatedDate") String formatedDate)
+    {
+
+        try {
+            String message = docterService.bulkCreateSchedule(arrSchedule,formatedDate,doctorid);
+            return
+                    ResponseEntity.status(HttpStatus.OK).body(
+                            new Json_Response_User(0,"OK",message)
+                    );
+
+        }catch (Exception e)
+        {
+            return
+                    ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body(
+                            new Json_Response_User(1,"Parameter missing",e)
+                    );
+        }
+
+
+
+
+    }
     @JsonView(Views.Custom.class)
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/get-profile-doctor-by-id")
